@@ -1,4 +1,5 @@
 # ActiveRecord::WhenChange
+[![Gem Version](https://badge.fury.io/rb/active_record-when_change.png)](http://badge.fury.io/rb/active_record-when_change)
 
 TODO: Write a gem description
 
