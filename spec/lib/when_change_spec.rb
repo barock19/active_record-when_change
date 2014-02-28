@@ -6,7 +6,7 @@ describe "when_change" do
     Post.new.should respond_to(:when_change)
   end
   context "when model defined some when_change event" do
-    after do
+    after(:each) do
       reset_all_constants
     end
 
@@ -18,21 +18,15 @@ describe "when_change" do
               notify_subsribers
             end
           end
-          after_commit do
-            when_change :status, from: :draft, to: :publised do
-              notify_subsribers
-            end
-          end
           def notify_subsribers
             true
           end
         end
       end
       let(:post){Post.new(status: :draft)}
-      it "should not triggered the action" do
-        post.should respond_to(:notify_subsribers)
-        mock(post).notify_subsribers.times(0)
-        post.update_attributes status: :publised
+      it_behaves_like "callback not triggered" do
+        let(:method){:notify_subsribers}
+        let(:attributes){{status: :publised}}
       end
     end
 
@@ -50,10 +44,33 @@ describe "when_change" do
         end
       end
       let(:post){Post.create(status: :draft)}
-      it "should not triggered the action" do
-        post.should respond_to(:notify_subsribers)
-        mock(post).notify_subsribers.times(1)
-        post.update_attributes status: :publised
+      it_behaves_like "callback triggered" do
+        let(:method){:notify_subsribers}
+        let(:attributes){{status: :publised}}
+      end
+    end
+    context "when if" do
+      context "when true" do
+        before do
+          reset_all_constants
+          Post.class_eval do
+            after_update do
+              when_change :status, if: 'true' do
+                notify_subsribers
+              end
+            end
+            def notify_subsribers
+              true
+            end
+          end
+        end
+        let(:post){Post.create(status: :draft)}
+        it_behaves_like "callback triggered" do
+          let(:method){:notify_subsribers}
+          let(:attributes){{status: :publised}}
+        end
+      end
+      context "when false" do
       end
     end
   end

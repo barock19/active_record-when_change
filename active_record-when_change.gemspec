@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["zidmubarock@gmail.com"]
   spec.summary       = %q{Simple DSL to control callback attribute changed in ActiveRecord model}
   spec.description   = %q{Simple DSL to control callback attribute changed in ActiveRecord model}
-  spec.homepage      = "http://barock.github.io/active_record-when_change"
+  spec.homepage      = "https://github.com/barock19/active_record-when_change"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
