@@ -13,15 +13,15 @@ module ActiveRecord
 
     def when_change attr, config={}, method = nil, &block
       # just return if config is blank or (method or block not given)
-      return if !@_new_record || config.blank? || (method == nil && !block_given? )
+      return if self.new_record? || config.blank? || (method == nil && !block_given? )
       config.keys.each{|key| logger.debug("#{key} is not valid options key for ArctiveRecordChanged") unless VALID_OPTIONS.include?(key)}
 
       new_attribute         = self.send(attr.to_sym)
       old_attribute         = self.send("#{attr}_was".to_sym)
       return if new_attribute == old_attribute
 
-      correct_form    = ( config[:from] and ( config[:from] != old_attribute ) ? false : true )
-      correct_to      = ( config[:to] and ( config[:to] != new_attribute ) ? false : true )
+      correct_form    = ( (config[:from] and ( config[:from] != old_attribute )) ? false : true )
+      correct_to      = ( (config[:to] and ( config[:to] != new_attribute )) ? false : true )
       correct_if      = ( (config[:if] and ( eval(config[:if]) != true ) ) ? false : true )
       correct_unless  = ( (config[:unless] and (eval(config[:unless]) == true) )? false : true )
 
