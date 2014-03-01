@@ -5,7 +5,7 @@ shared_examples "callback triggered" do
   end
 end
 shared_examples "callback not triggered" do
-  it "should triggered the calback" do
+  it "should not triggered the calback" do
     mock(post, method).times(0)
     post.update_attributes(attributes)
   end
